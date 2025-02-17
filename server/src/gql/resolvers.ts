@@ -19,8 +19,8 @@ const resolvers = {
     }
   },
   Feedback: {
-    highlights: () => {
-      return []
+    highlights: (parent : {id: number}) => {
+      return feedbackStore.getFeedbackHighlights(parent.id);
     }
   }
 };

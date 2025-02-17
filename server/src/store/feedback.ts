@@ -67,8 +67,8 @@ const createFeedback = async (text: string) => {
  */
 const createHighlight = async (args: CreateHighlightArgs) => {
   const result = db.prepare(`INSERT INTO Highlight (quote, summary, feedbackId)
-                             VALUES (?, ?, ?)`).run(args.highlightSummary, args.highlightQuote, args.feedbackId);
+                             VALUES (?, ?, ?)`).run(args.highlightQuote, args.highlightSummary, args.feedbackId);
   return {id: result.lastInsertRowid, ...result}
 }
 
-export default {getFeedback, getFeedbackPage, createFeedback};
+export default {getFeedback, getFeedbackPage, createFeedback, getFeedbackHighlights, createHighlight};

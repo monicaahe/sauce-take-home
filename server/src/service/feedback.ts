@@ -8,6 +8,17 @@ import prompt from "../ai/prompt";
 const createFeedback = async (text: string) => {
   const feedback = await feedbackStore.createFeedback(text);
   const analysisResult = await prompt.runFeedbackAnalysis(feedback.text);
+  const highlights = analysisResult.highlights.map((highlight) => {
+      feedbackStore.createHighlight(
+          {
+              feedbackId: feedback.id,
+              highlightSummary: highlight.summary,
+              highlightQuote: highlight.quote
+          }
+      )
+  })
+
+  await Promise.all(highlights);
 
   return feedback;
 }
