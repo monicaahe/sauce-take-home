@@ -25,7 +25,6 @@ export default function FeedbackList() {
         console.error("Error fetching number of feedbacks:", error);
       }
     };
-
     fetchNumFeedbacks();
   }, []);
 
@@ -70,7 +69,7 @@ export default function FeedbackList() {
       <div className="flex justify-between mt-4">
         <button onClick={() => setPage((prev) => Math.max(1, prev - 1))} disabled={page === 1} className="px-4 py-2 bg-gray-700 text-white disabled:opacity-50">Previous</button>
         <span className="text-white">Page {page}</span>
-        <button onClick={() => setPage((prev) => prev + 1)} disabled={feedbacks.length < itemsPerPage} className="px-4 py-2 bg-gray-700 text-white">Next</button>
+        <button onClick={() => setPage((prev) => prev + 1)} disabled={page * itemsPerPage >= totalFeedbacks} className="px-4 py-2 bg-gray-700 text-white">Next</button>
       </div>
 
      <div className="mt-4">

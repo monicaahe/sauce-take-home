@@ -19,7 +19,11 @@ const resolvers = {
   Mutation: {
     createFeedback: (parent: unknown, args: { text: string }) => {
       return feeedbackService.createFeedback(args.text)
+    },
+    createBulkFeedbacks: (parent: unknown, args: { texts: string[] }) => {
+      return feeedbackService.createBulkFeedbacks(args.texts)
     }
+
   },
   Feedback: {
     highlights: (parent : {id: number}) => {

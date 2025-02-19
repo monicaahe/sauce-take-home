@@ -8,19 +8,31 @@ import prompt from "../ai/prompt";
 const createFeedback = async (text: string) => {
   const feedback = await feedbackStore.createFeedback(text);
   const analysisResult = await prompt.runFeedbackAnalysis(feedback.text);
+  storeHighlights({ id: Number(feedback.id), text: feedback.text });
+  return feedback;
+}
+
+/**
+ * Creates multiple feedback entries and runs analysis on them asynchronously.
+ * @param texts - array of feedback
+ */
+const createBulkFeedbacks = async (texts: string[]) => {
+  const feedbacks = await Promise.all(texts.map(text => feedbackStore.createFeedback(text)));
+  feedbacks.forEach(feedback => storeHighlights({id: Number(feedback.id), text: feedback.text}));
+  return feedbacks;
+}
+
+const storeHighlights = async (feedback: { id: number, text: string }) => {
+  const analysisResult = await prompt.runFeedbackAnalysis(feedback.text);
   const highlights = analysisResult.highlights.map((highlight) => {
-      feedbackStore.createHighlight(
-          {
-              feedbackId: feedback.id,
-              highlightSummary: highlight.summary,
-              highlightQuote: highlight.quote
-          }
-      )
-  })
+    return feedbackStore.createHighlight({
+      feedbackId: feedback.id,
+      highlightSummary: highlight.summary,
+      highlightQuote: highlight.quote
+    });
+  });
 
   await Promise.all(highlights);
-
-  return feedback;
 }
 
 /**
@@ -42,4 +54,5 @@ export default {
   createFeedback,
   getFeedbackPage,
   getNumFeedbacks,
+  createBulkFeedbacks
 }
