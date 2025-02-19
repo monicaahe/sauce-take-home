@@ -34,7 +34,12 @@ const getFeedbackPage = async (page: number, perPage: number) => {
   return {values, count};
 }
 
+const getNumFeedbacks = async () => {
+    return feedbackStore.countFeedback();
+}
+
 export default {
   createFeedback,
   getFeedbackPage,
+  getNumFeedbacks,
 }

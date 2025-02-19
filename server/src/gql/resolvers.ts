@@ -12,6 +12,9 @@ const resolvers = {
     feedbacks: (parent: unknown, args: { page: number; per_page: number }) => {
       return feeedbackService.getFeedbackPage(args.page, args.per_page)
     },
+    numFeedbacks: () => {
+      return feeedbackService.getNumFeedbacks();
+    }
   },
   Mutation: {
     createFeedback: (parent: unknown, args: { text: string }) => {
